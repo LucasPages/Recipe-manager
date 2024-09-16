@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div class="flex flex-row justify-between my-4">
+        <div class="container">
+            <h2 class="text-xl mb-3 font-bold">{{ recipe.name }}</h2>
+            {% if recipe.picture %}
+                <div class="ms-3 w-4/6 h-[50vh]">
+                    <img src="{{ recipe.picture.url }}"
+                         alt="{{ recipe.name }}"
+                         class="w-full h-full object-cover rounded-lg" />
+                </div>
+            {% endif %}
+            <h3 class="text-lg my-2 font-bold">Ingredients</h3>
+            <ul class="marker:text-indigo-300 list-disc pl-5">
+                {% for ingredient in recipe.ingredients.all %}<li>{{ ingredient }}</li>{% endfor %}
+            </ul>
+            <h3 class="text-lg my-2 font-bold">Instructions</h3>
+            <p>{{ recipe.instructions|linenumbers|linebreaksbr }}</p>
+            <h3 class="text-lg my-2 font-bold">Notes</h3>
+            <p class="italic">{{ recipe.notes }}</p>
+            <div class="my-4 w-2/4 border-t-2 border-indigo-200"></div>
+            <h4 class="mt-3">
+                {% for tag in recipe.tags.all %}
+                    <a href="{% url 'recipes:tag' tag=tag.tag %}"><span class="w-fit px-3 py-1 my-2 rounded-full bg-indigo-300">{{ tag }}</span></a>
+                {% endfor %}
+            </h4>
+        </div>
+        <div class="flex flex-row gap-6 items-start">
+            <a href="{% url 'recipes:update' pk=recipe.pk %}" class="pe-1 text-xl"><i class="fa-solid fa-pencil text-body fs-3"></i></a>
+            <button type="button"
+                    id="deleteButton"
+                    class="pe-1 text-xl"
+                    data-modal-target="deleteModal"
+                    data-modal-toggle="deleteModal">
+                <i class="fa-solid fa-trash-can fs-3"></i>
+            </button>
+        </div>
+    </div>
+    <div id="deleteModal"
+         class="flex justify-center items-center h-screen w-screen absolute inset-0 z-50 bg-gray-200/80"
+         style='display:none'>
+        <div class="bg-gray-300 rounded-md p-2 m-2 w-3/6"
+             tabindex="-1"
+             id="popup"
+             aria-labelledby="deleteModal"
+             aria-hidden="true">
+            <div class="ms-2 flex flex-row justify-between">
+                <h1 class="text-lg font-bold border-b-2 border-gray-600 w-3/6 mt-2 mb-4">Delete Recipe</h1>
+                <button id="crossButtonModal"
+                        type="button"
+                        class="me-2"
+                        data-bs-dismiss="modal"
+                        aria-label="Close">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="ms-2 mb-4">
+                <p>Do you really want to delete this recipe ?</p>
+            </div>
+            <div class="flex flex-row gap-2 justify-end items-center">
+                <button type="button"
+                        id="cancelButtonModal"
+                        class="p-1 rounded-md border-2 border-indigo-300 text-indigo-300 hover:bg-indigo-300 hover:text-indigo-100"
+                        data-bs-dismiss="modal">Cancel</button>
+                <form action="{% url 'recipes:delete' pk=recipe.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit"
+                            class="p-1 rounded-md border-2 border-transparent text-red-600 hover:bg-red-600 hover:text-gray-100">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock content %}

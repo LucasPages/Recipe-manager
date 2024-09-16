@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    form th {
+        @apply pe-28;
+    }
+    form td {
+        @apply pb-2 w-[40vh];
+    }
+    form tr:has(textarea), form tr:has(select) {
+        @apply items-start !important;
+    }
+    form input[type="text"] {
+        @apply border-b-2 border-gray-500 p-2;
+    }
+    textarea {
+        @apply rounded-md border-gray-500;
+        border-width: 1px;
+        padding: 0.5rem;
+    }
+    span[role="combobox"] {
+        border-width: 1px;
+        @apply rounded-md border-gray-500 !important;
+    }
+    form input[type="submit"] {
+        cursor: pointer !important;
+    }
+}

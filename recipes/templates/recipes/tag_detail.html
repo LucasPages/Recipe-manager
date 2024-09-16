@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container my-4 ms-2">
+        <h2 class="w-fit px-3 py-1 my-2 rounded-full bg-indigo-300">{{ tag.tag }}</h2>
+        <h3 class="my-5">Tagged recipes :</h3>
+        <div class="grid grid-cols-1 my-4 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {% for recipe in tag.recipe.all %}
+                <div class="border-2 border-gray-300 rounded-md my-0 mx-auto max-w-[300px] w-full h-96">
+                    {% if recipe.picture %}
+                        <div class="h-4/6">
+                            <img src="{{ recipe.picture.url }}"
+                                 alt="{{ recipe.picture.name }}"
+                                 class="w-full h-full object-cover">
+                        </div>
+                    {% else %}
+                        <div class="h-4/6 flex justify-center items-center">
+                            <span class="italic">No picture</span>
+                        </div>
+                    {% endif %}
+                    <div class="h-2/6 flex flex-col justify-between">
+                        <h3 class="text-xl pt-3 ps-3">
+                            <a href="{% url 'recipes:detail' pk=recipe.pk %}" class="">{{ recipe.name }}</a>
+                        </h3>
+                        <a href="{% url 'recipes:detail' pk=recipe.pk %}"
+                           class="p-2 bg-indigo-300 rounded-md hover:bg-indigo-200 w-fit self-end m-2 text-base">Read <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock content %}
