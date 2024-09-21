@@ -1,5 +1,9 @@
+from datetime import datetime
 from django.db import models
+from django.forms import ValidationError
 from django.urls import reverse
+from django.conf import settings
+import os
 
 # Create your models here.
 
@@ -28,8 +32,6 @@ class Tag(models.Model):
     
     def __str__(self):
         return self.tag
-    
-
 
 class Recipe(models.Model):
     name = models.CharField(max_length=256)
@@ -44,8 +46,20 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
     
+    def clean(self) -> None:
+        print(self)
+        file = self.cleaned_data['file']
+        print(file)
+        if os.path.exists(file):
+            print(f"{file} already exists")
+            raise ValidationError('File already exists')
+        return super().clean()
+    
     def save(self, *args, **kwargs):
+        # Fix this function and clean media folder
         self.name = self.name.capitalize()
+        self.picture = f"{settings.MEDIA_ROOT}/{os.path.basename(self.picture)}"
+        print(self.picture)
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
