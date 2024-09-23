@@ -109,3 +109,71 @@ class TestListViewData(TestCase):
         self.assertContains(response, text='<span class="italic">No picture</span>', count=1)
 
         os.remove(recipe_pasta.picture.path)
+
+
+class TestDetailViews(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+    
+    def setUp(self):
+        recipe_pasta = Recipe.objects.create(
+            name = "pesto pasta",
+            picture = None,
+            instructions = "Cook the pasta.\nMix in the pesto.",
+            notes = "Add parmesan for extra flavour"
+        )
+        recipe_pasta.ingredients.set([Ingredient.objects.get_or_create(name="Pasta")[0], Ingredient.objects.get_or_create(name="Pesto")[0]])
+        recipe_pasta.tags.set([Tag.objects.get_or_create(tag="pasta")[0]])
+    
+    def test_detail_recipe_accessible(self):
+        response = self.client.get(reverse('recipes:detail', kwargs={'pk': Recipe.objects.get(name="Pesto pasta").pk}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_recipe_correct_template(self):
+        response = self.client.get(reverse('recipes:detail', kwargs={'pk': Recipe.objects.get(name="Pesto pasta").pk}))
+        self.assertTemplateUsed(response, 'recipes/recipe_detail.html')
+
+    def test_detail_tag_accessible(self):
+        response = self.client.get(reverse('recipes:tag', kwargs={'tag': Tag.objects.get(tag="pasta").tag}))
+        self.assertEqual(response.status_code, 200)
+
+    def test_detail_tag_correct_template(self):
+        response = self.client.get(reverse('recipes:tag', kwargs={'tag': Tag.objects.get(tag="pasta").tag}))
+        self.assertTemplateUsed(response, 'recipes/tag_detail.html')
+
+
+class TestDeleteView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+    
+    def setUp(self):
+        recipe_pasta = Recipe.objects.create(
+            name = "pesto pasta",
+            picture = None,
+            instructions = "Cook the pasta.\nMix in the pesto.",
+            notes = "Add parmesan for extra flavour"
+        )
+        recipe_pasta.ingredients.set([Ingredient.objects.get_or_create(name="Pasta")[0], Ingredient.objects.get_or_create(name="Pesto")[0]])
+        recipe_pasta.tags.set([Tag.objects.get_or_create(tag="pasta")[0]])
+
+    def test_recipe_deleted(self):
+        count_data = Recipe.objects.filter().count()
+        self.assertEqual(count_data, 1)
+
+        self.client.post(reverse('recipes:delete', kwargs={'pk': Recipe.objects.get(name="Pesto pasta").pk}))
+        count_data = Recipe.objects.filter().count()
+        self.assertEqual(count_data, 0)
+
+    def test_success_url(self):
+        response = self.client.post(reverse('recipes:delete', kwargs={'pk': Recipe.objects.get(name="Pesto pasta").pk}))
+        self.assertRedirects(response, reverse('recipes:list'))
+
+    
+class TestCreateRecipe(TestCase):
+    pass
+
+
+class TestUpdateRecipe(TestCase):
+    pass
