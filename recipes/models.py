@@ -47,11 +47,9 @@ class Recipe(models.Model):
         return self.name
     
     def clean(self) -> None:
-        print(self)
         file = self.cleaned_data['file']
-        print(file)
         if os.path.exists(file):
-            print(f"{file} already exists")
+            # print(f"{file} already exists")
             raise ValidationError('File already exists')
         return super().clean()
     

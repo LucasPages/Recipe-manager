@@ -2,6 +2,7 @@ from django.test import TestCase, SimpleTestCase, Client
 from django.urls import reverse, resolve
 from django.core.files.images import ImageFile
 from recipes.models import Recipe, Tag, Ingredient
+import os
 
 
 class TestAbout(TestCase):
@@ -98,12 +99,13 @@ class TestListViewData(TestCase):
 
         self.assertContains(response, text='<span class="italic">No picture</span>', count=2)
 
-
     def test_image_correct(self):
         recipe_pasta = Recipe.objects.get(name='Pesto pasta')
-        recipe_pasta.picture = ImageFile(open('media/photo_recipes/eggplant_sm.jpg', 'rb'))
+        recipe_pasta.picture = ImageFile(open('media/photo_recipes/eggplant_sm.jpg', 'rb'), 
+                                         name="eggplant_sm.jpg")
         recipe_pasta.save()
 
         response = TestListViewData.client.get(reverse('recipes:list'))
-
         self.assertContains(response, text='<span class="italic">No picture</span>', count=1)
+
+        os.remove(recipe_pasta.picture.path)
