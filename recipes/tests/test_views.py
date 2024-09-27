@@ -102,14 +102,11 @@ class TestListViewData(TestCase):
 
     def test_image_correct(self):
         recipe_pasta = Recipe.objects.get(name='Pesto pasta')
-        recipe_pasta.picture = ImageFile(open('media/photo_recipes/eggplant_sm.jpg', 'rb'), 
-                                         name="eggplant_sm.jpg")
+        recipe_pasta.picture = 'photo_recipes/eggplant_sm.jpg'
         recipe_pasta.save()
 
         response = TestListViewData.client.get(reverse('recipes:list'))
         self.assertContains(response, text='<span class="italic">No picture</span>', count=1)
-
-        os.remove(recipe_pasta.picture.path)
 
 
 class TestDetailViews(TestCase):
@@ -215,8 +212,7 @@ class TestUpdateRecipe(TestCase):
     
     def test_data_filled(self):
         recipe_pasta = Recipe.objects.get(name='Pesto pasta')
-        recipe_pasta.picture = ImageFile(open('media/photo_recipes/eggplant_sm.jpg', 'rb'), 
-                                         name="eggplant_sm.jpg")
+        recipe_pasta.picture = 'photo_recipes/eggplant_sm.jpg'
         recipe_pasta.save()
 
         response = self.client.get(reverse('recipes:update', kwargs={'pk': recipe_pasta.pk}))
@@ -227,5 +223,3 @@ class TestUpdateRecipe(TestCase):
         self.assertEqual(response.context['form'].initial['tags'], [Tag.objects.get_or_create(tag="pasta")[0]])
         self.assertEqual(response.context['form'].initial['picture'], recipe_pasta.picture)
         self.assertEqual(response.context['form'].initial['ingredients'], [Ingredient.objects.get_or_create(name="Pasta")[0], Ingredient.objects.get_or_create(name="Pesto")[0]])
-        
-        os.remove(recipe_pasta.picture.path)

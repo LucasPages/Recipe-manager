@@ -10,7 +10,7 @@ class CreateRecipe(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'ingredients' : autocomplete.ModelSelect2Multiple(url='recipes:ingredient-autocomplete'),
-            'tags' : autocomplete.ModelSelect2Multiple(url='recipes:tag-autocomplete', attrs={'placeholder': 'Select tags for this recipe'}),
+            'tags' : autocomplete.ModelSelect2Multiple(url='recipes:tag-autocomplete'),
             'name': forms.TextInput(attrs={'placeholder': 'Recipe name', 'autocomplete': 'off'}),
             'instructions': forms.Textarea(attrs={'placeholder': 'Write each instruction on a new line', 'autocomplete': 'off'}),
             'notes': forms.Textarea(attrs={'placeholder': 'Personal notes, if relevant', 'autocomplete': 'off'})

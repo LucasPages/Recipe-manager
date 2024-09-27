@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 
+@layer base {
+    img.img-card {
+        border-radius: 3px !important;
+    }
+}
+
 @layer components {
     form th {
         @apply pe-28;

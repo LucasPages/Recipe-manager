@@ -15,6 +15,7 @@ django-bootstrap-v5==1.0.11
 django-braces==1.15.0
 django-cleanup==9.0.0
 django-cors-headers==4.4.0
+django-webtest==1.9.12
 djangorestframework==3.15.2
 djlint==1.34.1
 EditorConfig==0.12.4
@@ -35,4 +36,7 @@ six==1.16.0
 soupsieve==2.6
 sqlparse==0.5.1
 tqdm==4.66.5
+waitress==3.0.0
+WebOb==1.8.8
+WebTest==3.0.1
 wheel==0.43.0

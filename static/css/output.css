@@ -446,6 +446,10 @@ video {
   display: none;
 }
 
+img.img-card {
+  border-radius: 3px !important;
+}
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -838,6 +842,10 @@ form input[type="submit"] {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+.self-start {
+  align-self: flex-start;
 }
 
 .self-end {

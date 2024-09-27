@@ -1,7 +1,6 @@
 from django.db.models.query import QuerySet
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
-from django.urls import reverse, reverse_lazy
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView, DetailView
 from django.db.models import Q
 from recipes import models
@@ -28,8 +27,8 @@ class CreateRecipe(CreateView):
         form = forms.CreateRecipe(request.POST, request.FILES)
 
         if form.is_valid():
-            recipe = form.save(commit=False)
             try:
+                recipe = form.save()
                 recipe.picture = form.files['Data']
             except:
                 pass
@@ -49,13 +48,14 @@ class UpdateRecipe(UpdateView):
         form = forms.CreateRecipe(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
             try:
+                recipe = form.save()
                 recipe.picture = form.files['Data']
             except:
                 pass
             recipe.save()
             return redirect(recipe)
         else:
-            return self.form_invalid()
+            return self.form_invalid(form)
 
 
 class DeleteRecipe(DeleteView):

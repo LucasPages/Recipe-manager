@@ -38,7 +38,7 @@ class Recipe(models.Model):
     picture = models.ImageField(blank=True, upload_to='photo_recipes/')
     ingredients = models.ManyToManyField(Ingredient, related_name='recipe')
     instructions = models.TextField(blank=False)
-    tags = models.ManyToManyField(Tag, related_name='recipe')
+    tags = models.ManyToManyField(Tag, related_name='recipe', blank=True)
     notes = models.TextField(blank=True)
 
     ordering = ["name"]
