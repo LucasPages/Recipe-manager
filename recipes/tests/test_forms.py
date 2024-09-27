@@ -1,6 +1,7 @@
 from django_webtest import WebTest
 from django.urls import reverse
 from django.test import Client
+from django.conf import settings
 
 from recipes.forms import CreateRecipe
 from recipes.models import Recipe, Ingredient, Tag
@@ -73,7 +74,7 @@ class TestCreateForm(WebTest):
             'notes': "Add parmigianooooooo",
             'ingredients': [Ingredient.objects.get(name="Pasta").pk, Ingredient.objects.get(name="Pesto").pk],
             'tags': [Tag.objects.get(tag="pasta").pk, Tag.objects.get(tag="saucy").pk],
-            'picture': open('/home/lucas/web/django_projects/recipe_manager/media/photo_recipes/hummus_sm.jpg', 'rb'),
+            'picture': open(f'{settings.MEDIA_ROOT}/photo_recipes/hummus_sm.jpg', 'rb'),
         }
 
         response = client.post(
@@ -199,7 +200,7 @@ class TestUpdateForm(WebTest):
     
     def test_update_picture(self):
         recipe = Recipe.objects.get(name="Pesto pasta")
-        with open('/home/lucas/web/django_projects/recipe_manager/media/photo_recipes/hummus_sm.jpg', 'rb') as image:
+        with open(f'{settings.MEDIA_ROOT}/photo_recipes/hummus_sm.jpg', 'rb') as image:
             self.data['picture'] = image
             response = self.client.post(
                 reverse('recipes:update', kwargs={'pk': recipe.pk}),
