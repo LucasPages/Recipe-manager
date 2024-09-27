@@ -46,18 +46,8 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
     
-    def clean(self) -> None:
-        file = self.cleaned_data['file']
-        if os.path.exists(file):
-            # print(f"{file} already exists")
-            raise ValidationError('File already exists')
-        return super().clean()
-    
     def save(self, *args, **kwargs):
-        # Fix this function and clean media folder
         self.name = self.name.capitalize()
-        # self.picture.path = f"{settings.MEDIA_ROOT}/{os.path.basename(str(self.picture))}"
-        # print(self.picture, self.picture.path)
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):

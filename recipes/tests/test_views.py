@@ -2,6 +2,7 @@ from django.test import TestCase, SimpleTestCase, Client
 from django.urls import reverse, resolve
 from django.core.files.images import ImageFile
 from recipes.models import Recipe, Tag, Ingredient
+from recipes.forms import CreateRecipe
 import os
 
 
@@ -172,8 +173,59 @@ class TestDeleteView(TestCase):
 
     
 class TestCreateRecipe(TestCase):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+    
+    def test_create_page_accessible(self):
+        response = self.client.get(reverse('recipes:create'))
+        self.assertEqual(response.status_code, 200)
+        
+    def test_create_page_uses_correct_template(self):
+        response = self.client.get(reverse('recipes:create'))
+        self.assertTemplateUsed(response, 'recipes/recipe_form.html')
 
 
 class TestUpdateRecipe(TestCase):
-    pass
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = Client()
+    
+    def setUp(self):
+        recipe_pasta = Recipe.objects.create(
+            name = "Pesto pasta",
+            picture = None,
+            instructions = "Cook the pasta.\nMix in the pesto.",
+            notes = "Add parmesan for extra flavour"
+        )
+        recipe_pasta.ingredients.set([Ingredient.objects.get_or_create(name="Pasta")[0], Ingredient.objects.get_or_create(name="Pesto")[0]])
+        recipe_pasta.tags.set([Tag.objects.get_or_create(tag="pasta")[0]])
+    
+    def test_update_page_accessible(self):
+        recipe = Recipe.objects.get(name='Pesto pasta')
+        response = self.client.get(reverse('recipes:update', kwargs={'pk': recipe.pk}))
+
+        self.assertEqual(response.status_code, 200)
+    
+    def test_update_page_uses_correct_template(self):
+        recipe = Recipe.objects.get(name='Pesto pasta')
+        response = self.client.get(reverse('recipes:update', kwargs={'pk': recipe.pk}))
+
+        self.assertTemplateUsed(response, 'recipes/recipe_form.html')
+    
+    def test_data_filled(self):
+        recipe_pasta = Recipe.objects.get(name='Pesto pasta')
+        recipe_pasta.picture = ImageFile(open('media/photo_recipes/eggplant_sm.jpg', 'rb'), 
+                                         name="eggplant_sm.jpg")
+        recipe_pasta.save()
+
+        response = self.client.get(reverse('recipes:update', kwargs={'pk': recipe_pasta.pk}))
+        
+        self.assertEqual(response.context['form'].initial['name'], 'Pesto pasta')
+        self.assertEqual(response.context['form'].initial['instructions'], 'Cook the pasta.\nMix in the pesto.')
+        self.assertEqual(response.context['form'].initial['notes'], 'Add parmesan for extra flavour')
+        self.assertEqual(response.context['form'].initial['tags'], [Tag.objects.get_or_create(tag="pasta")[0]])
+        self.assertEqual(response.context['form'].initial['picture'], recipe_pasta.picture)
+        self.assertEqual(response.context['form'].initial['ingredients'], [Ingredient.objects.get_or_create(name="Pasta")[0], Ingredient.objects.get_or_create(name="Pesto")[0]])
+        
+        os.remove(recipe_pasta.picture.path)

@@ -44,7 +44,7 @@ class UpdateRecipe(UpdateView):
     model = models.Recipe
     form_class = forms.CreateRecipe
 
-    def post(self, request: HttpRequest, *args: str, **kwargs: reverse_lazy) -> HttpResponse:
+    def post(self, request, *args, **kwargs):
         recipe = self.get_object()
         form = forms.CreateRecipe(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
