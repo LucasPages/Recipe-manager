@@ -7,6 +7,8 @@
 
 This project is a recipe note app using **Django** as Back-End, which used the Model, View, Template architecture. I developed it as a practice Django project and styled it using **Tailwind CSS** diretcly on the Django Templates.
 
+All images were sourced from [<ins>Unsplash</ins>](https://unsplash.com/images) and fall under the [<ins>Unsplash Free License</ins>](https://unsplash.com/license).
+
 ### Features
 
 The user is able to Create, Retrieve, Update and Delete recipes with basic data fields such as ingredients, instructions or tags. It's meant as a notes app more than a blog, as it does not implement User login.
@@ -29,4 +31,4 @@ $ docker pull ghcr.io/lucaspages/recipe_manager/recipe_app:latest
 ```
 
 
-*Thank you for looking at this repo !*
+*Thank you for looking at this repo !* :wave:
