@@ -967,6 +967,10 @@ form input[type="submit"] {
   padding-top: 0.75rem;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .text-end {
   text-align: end;
 }
@@ -994,6 +998,10 @@ form input[type="submit"] {
   font-weight: 700;
 }
 
+.font-medium {
+  font-weight: 500;
+}
+
 .italic {
   font-style: italic;
 }
@@ -1003,9 +1011,18 @@ form input[type="submit"] {
   color: rgb(165 180 252 / var(--tw-text-opacity));
 }
 
+.text-indigo-400 {
+  --tw-text-opacity: 1;
+  color: rgb(129 140 248 / var(--tw-text-opacity));
+}
+
 .text-red-600 {
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
 }
 
 .decoration-indigo-300 {
@@ -1065,8 +1082,17 @@ form input[type="submit"] {
   color: rgb(224 231 255 / var(--tw-text-opacity));
 }
 
+.hover\:text-indigo-400:hover {
+  --tw-text-opacity: 1;
+  color: rgb(129 140 248 / var(--tw-text-opacity));
+}
+
 .hover\:underline:hover {
   text-decoration-line: underline;
+}
+
+.hover\:no-underline:hover {
+  text-decoration-line: none;
 }
 
 @media (min-width: 640px) {

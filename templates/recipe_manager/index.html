@@ -2,11 +2,14 @@
 {% block content %}
     <div class="container my-4">
         <h1 class="text-lg mb-4">Welcome to the Recipe Manager!</h1>
-        <p>This website as a blog / note app to write down recipes and add notes to them.</p>
-        <p>Made by Lucas Pagès as a portfolio project using Django and Tailwind CSS.</p>
+        <p>This website is meant as a note app to write down recipes and add notes to them.</p>
+        <p>Made by <a class="underline hover:no-underline hover:text-indigo-400 decoration-indigo-300 decoration-4 underline-offset-4 font-bold" href="https://github.com/LucasPages">Lucas Pagès</a> as a <span class="font-bold text text-indigo-400">Django</span> practice project and using <span class="font-bold text-indigo-400">Tailwind CSS</span> for styling.</p>
         <br>
         <p>
-            This website implements <span class="italic">CRUD operations</span> on recipe pages. It's meant to be a notes app more than a food blog.
+            This website implements <span class="italic font-medium">CRUD operations</span> on recipe objects.
         </p>
+        <p>A visitor can thus create new recipes, update the existing ones, look at recipe pages or delete recipe records. One can on top of that use <span class="italic font-medium">search bar</span> to fetch recipes by name or tag.</p>
+        <br>
+        <p class="italic">Thank you for looking at this website !</p>
     </div>
 {% endblock content %}
