@@ -20,6 +20,6 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: |
-              docker build . --file Dockerfile --tag ghcr.io/LucasPages/recipe_app:latest
-              docker push ghcr.io/LucasPages/recipe_app:latest
+              docker build . --file Dockerfile --tag ghcr.io/lucaspages/recipe_manager/recipe_app:latest
+              docker push ghcr.io/lucaspages/recipe_manager/recipe_app:latest
 
