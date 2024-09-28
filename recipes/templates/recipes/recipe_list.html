@@ -1,7 +1,8 @@
 {% extends "recipe_manager/base.html" %}
 {% block content %}
-    <div class="grid grid-cols-1 my-4 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {% if not recipe_list %}<h2 class="recipe-heading fst-italic fw-light">No results</h2>{% endif %}
+{% if not recipe_list %}<h2 class="italic text-center w-fit mx-auto my-5">No results</h2>{% endif %}
+    <div class="grid grid-cols-1 my-4 md:grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-4" {% if not recipe_list %} style="display:none;" {% endif%}>
+        
         {% for recipe in recipe_list %}
             <div class="recipe-card border-2 border-gray-300 rounded-md my-0 mx-auto max-w-[300px] w-full h-96">
                 {% if recipe.picture %}
